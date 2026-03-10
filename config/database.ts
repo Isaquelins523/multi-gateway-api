@@ -3,7 +3,8 @@ import env from '#start/env'
 import { defineConfig } from '@adonisjs/lucid'
 
 const dbConfig = defineConfig({
-  connection: env.get('DB_CONNECTION') ?? 'mysql',
+  // Em ambiente de teste usamos SQLite para facilitar os testes automatizados
+  connection: app.inTest ? 'sqlite' : env.get('DB_CONNECTION') ?? 'mysql',
 
   connections: {
     mysql: {
@@ -22,6 +23,22 @@ const dbConfig = defineConfig({
         paths: ['database/migrations'],
       },
 
+      debug: app.inDev,
+    },
+
+    sqlite: {
+      client: 'better-sqlite3',
+
+      connection: {
+        filename: app.tmpPath('db.sqlite3'),
+      },
+
+      migrations: {
+        naturalSort: true,
+        paths: ['database/migrations'],
+      },
+
+      useNullAsDefault: true,
       debug: app.inDev,
     },
   },
