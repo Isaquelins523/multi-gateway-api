@@ -1,5 +1,4 @@
 
-```markdown
 # Multi-Gateway API (Nível 1)
 
 API RESTful para gerenciamento de pagamentos multi-gateway. Nível 1: valor da compra vem direto pela API; gateways sem autenticação.
