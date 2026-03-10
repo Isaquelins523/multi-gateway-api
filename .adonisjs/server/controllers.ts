@@ -26,7 +26,4 @@ export const controllers = {
   users: {
     Users: () => import('#controllers/users/users_controller'),
   },
-  gateways: {
-    Gateways: () => import('#controllers/gateways/gateways_controller'),
-  },
 }
