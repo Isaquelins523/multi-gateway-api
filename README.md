@@ -19,7 +19,6 @@ API RESTful para gerenciamento de pagamentos multi-gateway. Nível 1: valor da c
    ```bash
    npm ci
 
-```
 
 2. **Configure o ambiente:**
 Copie `.env.example` para `.env` e preencha as credenciais:
