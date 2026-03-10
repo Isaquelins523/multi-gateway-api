@@ -114,7 +114,7 @@ Requer header: `Authorization: Bearer <token>` (token obtido no login). Rotas de
 ## Outras informa??es
 
 - **N?vel 1:** Valor da compra ? enviado no body (`amount` em centavos). N?o h? v?nculo com produtos/quantidades na transa??o. Gateways s?o chamados sem autentica??o (mock com `REMOVE_AUTH='true'`).
-- **Multi-gateway:** A compra tenta os gateways ativos na ordem de prioridade; no primeiro sucesso a resposta ? de sucesso. O reembolso chama o gateway que processou a transa??o (charge_back no Gateway 1, reembolso no Gateway 2).
+- **Multi-gateway:** A compra tenta os gateways ativos na ordem de prioridade; **se um gateway falhar, automaticamente tenta o pr?ximo**. No primeiro sucesso, a resposta ? de sucesso e o fluxo para. O reembolso chama o gateway que processou a transa??o (charge_back no Gateway 1, reembolso no Gateway 2).
 - **Respostas:** JSON. Valida??o com VineJS; banco com Lucid (MySQL).
 
 ## Caso de falha
