@@ -1,6 +1,6 @@
-# Multi-Gateway API (Nível 1)
+# Multi-Gateway API (N?vel 1)
 
-API RESTful para gerenciamento de pagamentos multi-gateway. Nível 1: valor da compra vem direto pela API; gateways sem autenticação.
+API RESTful para gerenciamento de pagamentos multi-gateway. N?vel 1: valor da compra vem direto pela API; gateways sem autentica??o.
 
 ## Requisitos
 
@@ -8,11 +8,11 @@ API RESTful para gerenciamento de pagamentos multi-gateway. Nível 1: valor da co
 - MySQL 8 (ou use Docker)
 - (Opcional) Docker e Docker Compose para rodar tudo junto
 
-## Instalação e execução
+## Instala??o e execu??o
 
 ### Sem Docker
 
-1. Clone o repositório e instale as dependências:
+1. Clone o reposit?rio e instale as depend?ncias:
 
    ```bash
    npm ci
@@ -24,21 +24,21 @@ API RESTful para gerenciamento de pagamentos multi-gateway. Nível 1: valor da co
    cp .env.example .env
    ```
 
-   Edite `.env` com as variáveis do MySQL (`MYSQL_HOST`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DB_NAME`) e `APP_KEY` (obrigatório).
+   Edite `.env` com as vari?veis do MySQL (`MYSQL_HOST`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DB_NAME`) e `APP_KEY` (obrigat?rio).
 
-3. Rode as migrações:
+3. Rode as migra??es:
 
    ```bash
    node ace.js migration:run
    ```
 
-4. Rode o seeder para criar os gateways (gateway1 e gateway2). Sem isso, compras retornam "Nenhum gateway disponível":
+4. Rode o seeder para criar os gateways (gateway1 e gateway2). Sem isso, compras retornam "Nenhum gateway dispon?vel":
 
    ```bash
    node ace.js db:seed
    ```
 
-5. (Opcional) Para testar compras e reembolsos, suba o mock dos gateways **sem autenticação** (Nível 1):
+5. (Opcional) Para testar compras e reembolsos, suba o mock dos gateways **sem autentica??o** (N?vel 1):
 
    ```bash
    docker run -p 3001:3001 -p 3002:3002 -e REMOVE_AUTH='true' matheusprotzen/gateways-mock
@@ -54,10 +54,10 @@ API RESTful para gerenciamento de pagamentos multi-gateway. Nível 1: valor da co
 
 ### Com Docker Compose
 
-Sobe MySQL, a aplicação e o mock dos gateways (sem auth). A conexão com o banco e demais configs vêm do `.env`.
+Sobe MySQL, a aplica??o e o mock dos gateways (sem auth). A conex?o com o banco e demais configs v?m do `.env`.
 
-1. Copie `.env.example` para `.env` e preencha (obrigatório: `APP_KEY`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DB_NAME`; para o serviço MySQL do compose, `MYSQL_ROOT_PASSWORD`).
-2. Suba os serviços:
+1. Copie `.env.example` para `.env` e preencha (obrigat?rio: `APP_KEY`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_DB_NAME`; para o servi?o MySQL do compose, `MYSQL_ROOT_PASSWORD`).
+2. Suba os servi?os:
 
    ```bash
    docker compose up --build
@@ -67,21 +67,21 @@ Sobe MySQL, a aplicação e o mock dos gateways (sem auth). A conexão com o banco 
    - Gateway 1: http://localhost:3001
    - Gateway 2: http://localhost:3002
 
-   O Compose usa o `.env` no serviço da app; apenas `MYSQL_HOST` é sobrescrito para `mysql` (nome do serviço) dentro da rede Docker. As migrações e o seeder de gateways rodam automaticamente na subida do serviço `app`.
+   O Compose usa o `.env` no servi?o da app; apenas `MYSQL_HOST` ? sobrescrito para `mysql` (nome do servi?o) dentro da rede Docker. As migra??es e o seeder de gateways rodam automaticamente na subida do servi?o `app`.
 
 ## Rotas
 
-Todas as rotas da API estão sob o prefixo **`/api/v1`**.
+Todas as rotas da API est?o sob o prefixo **`/api/v1`**.
 
-### Públicas
+### P?blicas
 
-| Método | Rota | Descrição |
+| M?todo | Rota | Descri??o |
 |--------|------|-----------|
 | POST | `/api/v1/auth/login` | Login (retorna token para rotas privadas) |
-| POST | `/api/v1/auth/signup` | Cadastro de usuário |
+| POST | `/api/v1/auth/signup` | Cadastro de usu?rio |
 | POST | `/api/v1/purchases` | Realizar compra (amount, name, email, cardNumber, cvv) |
 
-**Exemplo de compra (Nível 1  valor direto):**
+**Exemplo de compra (N?vel 1  valor direto):**
 
 ```json
 POST /api/v1/purchases
@@ -94,11 +94,11 @@ POST /api/v1/purchases
 }
 ```
 
-### Privadas (Bearer token obrigatório)
+### Privadas (Bearer token obrigat?rio)
 
-Requer header: `Authorization: Bearer <token>` (token obtido no login). Rotas de gestão exigem role `admin`.
+Requer header: `Authorization: Bearer <token>` (token obtido no login). Rotas de gest?o exigem role `admin`.
 
-| Método | Rota | Descrição |
+| M?todo | Rota | Descri??o |
 |--------|------|-----------|
 | GET | `/api/v1/purchases` | Listar compras |
 | GET | `/api/v1/purchases/:id` | Detalhe de uma compra |
@@ -109,10 +109,35 @@ Requer header: `Authorization: Bearer <token>` (token obtido no login). Rotas de
 | GET | `/api/v1/gateways/:id` | Detalhe do gateway |
 | PATCH | `/api/v1/gateways/:id` | Ativar/desativar ou alterar prioridade |
 | GET/POST/PUT/DELETE | `/api/v1/products` | CRUD de produtos |
-| GET/POST/PUT/DELETE | `/api/v1/users` | CRUD de usuários (admin) |
+| GET/POST/PUT/DELETE | `/api/v1/users` | CRUD de usu?rios (admin) |
 
-## Outras informações
+## Outras informa??es
 
-- **Nível 1:** Valor da compra é enviado no body (`amount` em centavos). Não há vínculo com produtos/quantidades na transação. Gateways são chamados sem autenticação (mock com `REMOVE_AUTH='true'`).
-- **Multi-gateway:** A compra tenta os gateways ativos na ordem de prioridade; no primeiro sucesso a resposta é de sucesso. O reembolso chama o gateway que processou a transação (charge_back no Gateway 1, reembolso no Gateway 2).
-- **Respostas:** JSON. Validação com VineJS; banco com Lucid (MySQL).
+- **N?vel 1:** Valor da compra ? enviado no body (`amount` em centavos). N?o h? v?nculo com produtos/quantidades na transa??o. Gateways s?o chamados sem autentica??o (mock com `REMOVE_AUTH='true'`).
+- **Multi-gateway:** A compra tenta os gateways ativos na ordem de prioridade; no primeiro sucesso a resposta ? de sucesso. O reembolso chama o gateway que processou a transa??o (charge_back no Gateway 1, reembolso no Gateway 2).
+- **Respostas:** JSON. Valida??o com VineJS; banco com Lucid (MySQL).
+
+## Caso de falha
+
+Quando **todos os gateways falham** (por indisponibilidade, erro de valida??o de cart?o ou qualquer erro HTTP n?o `2xx`), a API **n?o cria transa??o** no banco e retorna:
+
+```json
+{
+  "message": "Todos os gateways falharam",
+  "error": "Detalhe do ?ltimo erro retornado pelo gateway"
+}
+```
+
+Exemplo de resposta real:
+
+```json
+{
+  "message": "Todos os gateways falharam",
+  "error": "Gateway gateway1 (1): 400 Bad Request - {\"message\":\"Cart?o inv?lido\"}"
+}
+```
+
+Ou seja:
+
+- **Pelo menos um gateway sucesso** ? resposta 201 com a transa??o gravada (status `success`).
+- **Todos os gateways falharam** ? resposta 400 com `message` e `error`, sem criar transa??o.
