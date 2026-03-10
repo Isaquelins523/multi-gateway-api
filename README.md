@@ -81,7 +81,7 @@ Todas as rotas da API est?o sob o prefixo **`/api/v1`**.
 | POST | `/api/v1/auth/signup` | Cadastro de usu?rio |
 | POST | `/api/v1/purchases` | Realizar compra (amount, name, email, cardNumber, cvv) |
 
-**Exemplo de compra (N?vel 1  valor direto):**
+**Exemplo de compra (N?vel 1 ? valor direto):**
 
 ```json
 POST /api/v1/purchases
